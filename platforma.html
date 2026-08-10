@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PLATFORMA — Бетонні вироби</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  .swatch-nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:30px;height:30px;
+  border:none;background:rgba(33,31,28,0.5);
+  color:#efece5;font-size:16px;
+  cursor:pointer;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+}
+.swatch-nav:hover{background:rgba(33,31,28,0.75);}
+.swatch-prev{left:10px;}
+.swatch-next{right:10px;}
+.swatch-dots{
+  position:absolute;bottom:12px;left:14px;
+  display:flex;gap:6px;
+}
+.swatch-dots button{
+  width:7px;height:7px;border-radius:50%;border:none;
+  background:rgba(255,255,255,0.4);cursor:pointer;padding:0;
+}
+.swatch-dots button.active{background:#b5502a;}
+  :root{
+    --dark:#211f1c;
+    --mid:#6b675f;
+    --mid2:#8a867c;
+    --light:#c9c4ba;
+    --pale:#efece5;
+    --rust:#b5502a;
+    --rust-dark:#8a3c1f;
+    --line:#38352f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--pale);
+    color:var(--dark);
+    font-family:'Inter',sans-serif;
+    font-weight:400;
+    line-height:1.5;
+  }
+  h1,h2,h3{
+    font-family:'Archivo Black',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:-0.01em;
+    line-height:1.02;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 28px;}
+  ::selection{background:var(--rust);color:var(--pale);}
+
+  /* texture */
+  .grain{
+    position:relative;
+  }
+  .grain::before{
+    content:"";
+    position:absolute;inset:0;
+    background-image:
+      radial-gradient(circle at 15% 30%, rgba(255,255,255,0.025) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(0,0,0,0.08) 0, transparent 45%),
+      radial-gradient(circle at 60% 20%, rgba(255,255,255,0.02) 0, transparent 35%);
+    pointer-events:none;
+  }
+
+  /* HEADER */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:var(--dark);
+    border-bottom:6px solid var(--rust);
+  }
+  .header-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 28px;
+    max-width:1200px;margin:0 auto;
+  }
+  .logo{
+    font-family:'Archivo Black',sans-serif;
+    color:var(--pale);
+    font-size:22px;
+    letter-spacing:-0.02em;
+  }
+  .logo span{color:var(--rust);}
+  nav{display:flex;align-items:center;gap:32px;}
+  nav a{
+    color:var(--light);
+    font-size:14px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    transition:color .15s;
+  }
+  nav a:hover{color:var(--pale);}
+  .phone-btn{
+    background:var(--rust);
+    color:var(--pale) !important;
+    padding:10px 18px;
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    font-size:14px;
+    border:2px solid var(--rust);
+  }
+  .phone-btn:hover{background:transparent;}
+  .burger{display:none;background:none;border:none;cursor:pointer;padding:4px;}
+  .burger span{display:block;width:26px;height:3px;background:var(--pale);margin:5px 0;}
+
+  /* HERO */
+  .hero{
+    background:
+      linear-gradient(160deg, rgba(33,31,28,0.94), rgba(33,31,28,0.88)),
+      repeating-linear-gradient(45deg, #2c2924 0, #2c2924 2px, #262420 2px, #262420 4px);
+    color:var(--pale);
+    padding:110px 0 90px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--rust);
+    font-size:13px;
+    letter-spacing:0.14em;
+    margin-bottom:22px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .hero-eyebrow::before{content:"";width:36px;height:2px;background:var(--rust);}
+  .hero h1{
+    font-size:clamp(38px, 7vw, 84px);
+    max-width:900px;
+    color:var(--pale);
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.35);
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--rust);
+  }
+  .hero p{
+    max-width:560px;
+    margin-top:26px;
+    font-size:17px;
+    color:var(--light);
+  }
+  .hero-ctas{
+    display:flex;gap:16px;margin-top:40px;flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-block;
+    padding:16px 30px;
+    font-weight:700;
+    text-transform:uppercase;
+    font-size:14px;
+    letter-spacing:0.03em;
+    border:2px solid var(--rust);
+    transition:all .15s;
+  }
+  .btn-solid{background:var(--rust);color:var(--pale);}
+  .btn-solid:hover{background:var(--rust-dark);border-color:var(--rust-dark);}
+  .btn-line{color:var(--pale);border-color:var(--light);}
+  .btn-line:hover{border-color:var(--pale);}
+
+  /* STATS */
+  .stats{
+    background:var(--dark);
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border-bottom:1px solid var(--line);
+  }
+  .stat{
+    padding:38px 24px;
+    border-right:1px solid var(--line);
+    color:var(--pale);
+  }
+  .stat:last-child{border-right:none;}
+  .stat .num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:36px;
+    font-weight:700;
+    color:var(--rust);
+  }
+  .stat .lbl{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--mid2);
+    margin-top:6px;
+  }
+
+  /* SECTION HEADER */
+  .section{padding:90px 0;}
+  .section-head{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    margin-bottom:48px;
+    border-bottom:4px solid var(--dark);
+    padding-bottom:22px;
+    gap:24px;flex-wrap:wrap;
+  }
+  .section-head h2{font-size:clamp(28px,4vw,44px);}
+  .section-head p{
+    color:var(--mid);
+    max-width:380px;
+    font-size:15px;
+  }
+  .tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--rust);
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    margin-bottom:10px;
+    display:block;
+  }
+
+  /* PRODUCTS */
+  .products{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:2px;
+    background:var(--dark);
+    border:2px solid var(--dark);
+  }
+  .product{
+    background:var(--pale);
+    padding:0;
+    display:flex;flex-direction:column;
+  }
+  .product-swatch{
+    height:160px;
+    
+    position:relative;
+    border-bottom:2px solid var(--dark);
+  }
+  .product-swatch .stamp{
+    position:absolute;bottom:12px;right:14px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:rgba(255,255,255,0.6);
+    letter-spacing:0.05em;
+  }
+  .product-body{padding:24px;flex:1;display:flex;flex-direction:column;}
+  .product h3{font-size:19px;margin-bottom:10px;}
+  .product p{font-size:14px;color:var(--mid);margin-bottom:18px;flex:1;}
+  .product-specs{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12.5px;
+    color:var(--dark);
+    border-top:1px dashed var(--light);
+    padding-top:14px;
+    display:flex;justify-content:space-between;
+    margin-bottom:16px;
+  }
+  .product-specs .price{color:var(--rust);font-weight:700;}
+  .product-cta{
+    font-size:13px;font-weight:700;text-transform:uppercase;
+    letter-spacing:0.04em;color:var(--dark);
+    display:flex;align-items:center;gap:8px;
+  }
+  .product-cta::after{content:"→";transition:transform .15s;}
+  .product:hover .product-cta::after{transform:translateX(4px);}
+
+  /* PROCESS */
+  .process{
+    background:var(--dark);
+    color:var(--pale);
+  }
+  .process .section-head{border-bottom-color:var(--line);}
+  .process .section-head p{color:var(--mid2);}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);}
+  .step{
+    padding:32px 26px;
+    border-right:1px solid var(--line);
+  }
+  .step:last-child{border-right:none;}
+  .step .n{font-family:'JetBrains Mono',monospace;color:var(--rust);font-size:13px;margin-bottom:14px;}
+  .step h4{font-family:'Archivo Black';font-size:16px;text-transform:uppercase;margin-bottom:10px;}
+  .step p{font-size:13.5px;color:var(--mid2);}
+
+  /* WHY */
+  .why-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center;}
+  .why-list{list-style:none;}
+  .why-list li{
+    display:flex;gap:16px;padding:18px 0;
+    border-bottom:1px solid var(--light);
+  }
+  .why-list li:first-child{border-top:1px solid var(--light);}
+  .why-list .ico{
+    font-family:'JetBrains Mono',monospace;
+    color:var(--rust);font-weight:700;flex-shrink:0;
+  }
+  .why-visual{
+    background:var(--dark);
+    aspect-ratio:4/3;
+    position:relative;
+    border:10px solid var(--dark);
+    overflow:hidden;
+  }
+  .why-visual::before{
+    content:"";position:absolute;inset:0;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 58px, rgba(181,80,42,0.35) 58px 62px),
+      repeating-linear-gradient(0deg, #3a3630 0 40px, #322f29 40px 80px);
+  }
+  .why-visual .cap{
+    position:absolute;bottom:0;left:0;right:0;
+    background:var(--rust);color:var(--pale);
+    padding:14px 18px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;letter-spacing:0.05em;
+  }
+
+  /* CONTACT */
+  .contact{
+    background:var(--dark);
+    color:var(--pale);
+    padding:90px 0;
+  }
+  .contact-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:60px;
+  }
+  .contact h2{color:var(--pale);font-size:clamp(28px,4vw,42px);margin-bottom:20px;}
+  .contact p.lead{color:var(--mid2);margin-bottom:36px;max-width:420px;}
+  .contact-info{display:flex;flex-direction:column;gap:20px;}
+  .contact-info .row{display:flex;gap:14px;align-items:baseline;}
+  .contact-info .k{
+    font-family:'JetBrains Mono',monospace;color:var(--rust);
+    font-size:12px;text-transform:uppercase;letter-spacing:0.08em;
+    width:90px;flex-shrink:0;
+  }
+  .contact-info .v{font-size:16px;font-weight:600;}
+  form{display:flex;flex-direction:column;gap:14px;}
+  form input, form textarea, form select{
+    background:#2b2924;
+    border:1px solid var(--line);
+    color:var(--pale);
+    padding:15px 16px;
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+  }
+  form input:focus, form textarea:focus, form select:focus{
+    outline:none;border-color:var(--rust);
+  }
+  form label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;text-transform:uppercase;letter-spacing:0.06em;
+    color:var(--mid2);margin-bottom:-8px;
+  }
+  form button{
+    margin-top:10px;
+    background:var(--rust);color:var(--pale);
+    border:none;padding:17px;
+    font-weight:700;text-transform:uppercase;letter-spacing:0.04em;
+    cursor:pointer;font-size:14px;
+    transition:background .15s;
+  }
+  form button:hover{background:var(--rust-dark);}
+  .form-note{font-size:12px;color:var(--mid2);margin-top:-4px;}
+
+  /* FOOTER */
+  footer{
+    background:var(--dark);
+    border-top:6px solid var(--rust);
+    padding:30px 0;
+    color:var(--mid2);
+    font-size:13px;
+  }
+  .footer-inner{
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+  }
+  .footer-inner .logo{font-size:16px;}
+
+  @media (max-width:900px){
+    nav{
+      position:fixed;top:73px;left:0;right:0;
+      background:var(--dark);
+      flex-direction:column;align-items:flex-start;
+      padding:20px 28px 30px;
+      gap:18px;
+      border-bottom:4px solid var(--rust);
+      transform:translateY(-130%);
+      transition:transform .2s;
+    }
+    nav.open{transform:translateY(0);}
+    .burger{display:block;}
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .stat:nth-child(2){border-right:none;}
+    .stat{border-bottom:1px solid var(--line);}
+    .products{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr 1fr;}
+    .step{border-bottom:1px solid var(--line);}
+    .why-grid, .contact-grid{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">PLAT<span>FORMA</span></div>
+    <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+    <nav id="nav">
+      <a href="#products">Каталог</a>
+      <a href="#process">Виробництво</a>
+      <a href="#why">Чому ми</a>
+      <a href="#contact">Контакти</a>
+      <a class="phone-btn" href="tel:+380979079663">097 907 9663</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero grain">
+  <div class="wrap">
+    <div class="hero-eyebrow">ВИРОБНИЦТВО БЕТОННИХ ВИРОБІВ · 20+ РОКІВ ДОСВІДУ</div>
+    <h1>МИ ЛЛЄМО<br><em>ОСНОВУ.</em><br>ВИ - БУДУЄТЕ.</h1>
+    <p>Тротуарна плитка, бордюри, блоки ФБС та вироби на замовлення. Власне виробництво, контроль марки бетону на кожному етапі, відвантаження з 3-5 днів заявки.</p>
+    <div class="hero-ctas">
+      <a href="#products" class="btn btn-solid">Дивитись каталог</a>
+      <a href="tel:+380979079663" class="btn btn-line">Замовити дзвінок</a>
+    </div>
+  </div>
+</section>
+
+<div class="stats">
+  <div class="stat wrap-inner">
+    <div class="num">20+</div>
+    <div class="lbl">років на ринку</div>
+  </div>
+  <div class="stat">
+    <div class="num">450 м³</div>
+    <div class="lbl">виробництво щомісяця</div>
+  </div>
+  <div class="stat">
+    <div class="num">М300</div>
+    <div class="lbl">мінімальна марка бетону</div>
+  </div>
+  <div class="stat">
+    <div class="num">24 год</div>
+    <div class="lbl">на обробку заявки</div>
+  </div>
+</div>
+
+<section class="section" id="products">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="tag">Каталог</span>
+        <h2>Що ми виробляємо</h2>
+      </div>
+      <p>Стандартний асортимент завжди в наявності.</p>
+    </div>
+
+    <div class="products">
+      <div class="product">
+        <div class="product-swatch js-slider" data-variants='[
+            {"label":"Цегла","bg":"linear-gradient(135deg,#8a867c,#6b675f)"},
+            {"label":"Старе місто","bg":"linear-gradient(135deg,#9a968b,#78746a)"},
+            {"label":"Хвиля","bg":"linear-gradient(135deg,#7a766c,#57534b)"},
+            {"label":"Соти","bg":"linear-gradient(135deg,#8a867c,#78746a)"}
+          ]' style="background:linear-gradient(135deg,#8a867c,#6b675f);">
+          <button class="swatch-nav swatch-prev" aria-label="Попередній візерунок">‹</button>
+          <button class="swatch-nav swatch-next" aria-label="Наступний візерунок">›</button>
+          <span class="stamp">ТП-200 / Цегла</span>
+          <div class="swatch-dots"></div>
+        </div>
+        <div class="product-body">
+          <h3>Тротуарна плитка</h3>
+          <p>Вібропресована плитка для доріжок, дворів та майданчиків. Стійка до морозу та стирання. Декілька візерунків на вибір.</p>
+          <div class="product-specs">
+            <span>200×100×60 мм</span>
+            <span class="price">від 320 ₴/м²</span>
+          </div>
+          <a href="#contact" class="product-cta">Замовити</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-swatch" style="background:linear-gradient(135deg,#9a968b,#78746a);">
+          <span class="stamp">БД-1000</span>
+        </div>
+        <div class="product-body">
+          <h3>Бордюр дорожній</h3>
+          <p>Магістральний та садовий бордюр для розмежування проїзної частини й тротуарів.</p>
+          <div class="product-specs">
+            <span>1000×300×150 мм</span>
+            <span class="price">від 210 ₴/шт</span>
+          </div>
+          <a href="#contact" class="product-cta">Замовити</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-swatch" style="background:linear-gradient(135deg,#7a766c,#57534b);">
+          <span class="stamp">ЗБ-2000</span>
+        </div>
+        <div class="product-body">
+          <h3>Паркан / огорожа</h3>
+          <p>Секційні бетонні паркани для приватних ділянок та промислових об'єктів.</p>
+          <div class="product-specs">
+            <span>2000×500 мм / секція</span>
+            <span class="price">від 480 ₴/секц.</span>
+          </div>
+          <a href="#contact" class="product-cta">Замовити</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-swatch" style="background:linear-gradient(135deg,#8a867c,#6b675f);">
+          <span class="stamp">ЛК-60</span>
+        </div>
+        <div class="product-body">
+          <h3>Люки каналізаційні</h3>
+          <p>Бетонні люки для каналізаційних та дренажних колодязів, різне навантаження.</p>
+          <div class="product-specs">
+            <span>Ø600 мм</span>
+            <span class="price">від 620 ₴/шт</span>
+          </div>
+          <a href="#contact" class="product-cta">Замовити</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-swatch" style="background:linear-gradient(135deg,#9a968b,#78746a);">
+          <span class="stamp">СП-250</span>
+        </div>
+        <div class="product-body">
+          <h3>Стовпчики паркановi</h3>
+          <p>Опорні стовпи для парканів та огорож із закладними елементами під лаги.</p>
+          <div class="product-specs">
+            <span>2500×100×100 мм</span>
+            <span class="price">від 280 ₴/шт</span>
+          </div>
+          <a href="#contact" class="product-cta">Замовити</a>
+        </div>
+      </div>
+
+      <div class="product">
+        <div class="product-swatch" style="background:linear-gradient(135deg,#7a766c,#57534b);">
+          <span class="stamp">БЛ-390</span>
+        </div>
+        <div class="product-body">
+          <h3>Блоки будівельні</h3>
+          <p>Бетонні блоки для стін, підвалин та господарських споруд.</p>
+          <div class="product-specs">
+            <span>390×190×190 мм</span>
+            <span class="price">від 65 ₴/шт</span>
+          </div>
+          <a href="#contact" class="product-cta">Замовити</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="wrap section">
+    <div class="section-head">
+      <div>
+        <span class="tag">Процес</span>
+        <h2>Від заявки до відвантаження</h2>
+      </div>
+      <p>Чотири кроки — стільки часу займає шлях вашого замовлення до готового виробу.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">01 / ЗАЯВКА</div>
+        <h4>Приймаємо замовлення</h4>
+        <p>Телефоном, у месенджері або через форму на сайті — узгоджуємо кількість і терміни.</p>
+      </div>
+      <div class="step">
+        <div class="n">02 / ЗАМІС</div>
+        <h4>Готуємо бетон</h4>
+        <p>Замішуємо суміш потрібної марки, контролюємо пропорції на кожній партії.</p>
+      </div>
+      <div class="step">
+        <div class="n">03 / ФОРМУВАННЯ</div>
+        <h4>Вібролиття та витримка</h4>
+        <p>Виріб набирає марочну міцність у формі, потім проходить контроль якості.</p>
+      </div>
+      <div class="step">
+        <div class="n">04 / ДОСТАВКА</div>
+        <h4>Відвантажуємо</h4>
+        <p>Самовивіз зі складу або доставка власним транспортом по місту й області.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="tag">Чому ми</span>
+        <h2>Не перше замовлення —<br>і не останнє</h2>
+      </div>
+    </div>
+    <div class="why-grid">
+      <div class="why-visual">
+        <div class="cap">ФОРМА ЗАЛИВАННЯ · ЦЕХ №1</div>
+      </div>
+      <ul class="why-list">
+        <li><span class="ico">✓</span><span>Власна виробнича база — без посередників і націнок перекупників.</span></li>
+        <li><span class="ico">✓</span><span>Контроль марки бетону та армування на кожній партії виробів.</span></li>
+        <li><span class="ico">✓</span><span>Завжди актуальний склад в наявності, без довгого очікування.</span></li>
+        <li><span class="ico">✓</span><span>Доставка власним транспортом.</span></li>
+        <li><span class="ico">✓</span><span>Якість на роки.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div>
+      <span class="tag" style="color:var(--rust)">Контакти</span>
+      <h2>Готові порахувати ваше замовлення</h2>
+      <p class="lead">Залиште заявку — передзвонимо протягом робочого дня і порахуємо вартість з доставкою.</p>
+      <div class="contact-info">
+        <div class="row"><span class="k">Телефон</span><span class="v">097 907 9663</span></div>
+        <div class="row"><span class="k">Адреса</span><span class="v">вул. Іваничівське шосе, 33, с. Будятичі, Волинська обл., 45313</span></div>
+        <div class="row"><span class="k">Графік</span><span class="v">Пн–Сб, 8:00–18:00</span></div>
+      </div>
+    </div>
+    <form id="orderForm">
+      <label for="name">Ім'я</label>
+      <input id="name" name="Ім'я" type="text" placeholder="Як до вас звертатись" required>
+      <label for="tel">Телефон</label>
+      <input id="tel" name="Телефон" type="tel" placeholder="+38 (0__) ___-__-__" required>
+      <label for="product">Виріб</label>
+      <select id="product" name="Виріб">
+        <option>Тротуарна плитка</option>
+        <option>Паркан / огорожа</option>
+        <option>Бордюр дорожній</option>
+        <option>Люки каналізаційні</option>
+        <option>Блоки будівельні</option>
+        <option>Стовпчики паркановi</option>
+      </select>
+      <label for="msg">Коментар</label>
+      <textarea id="msg" name="Коментар" rows="3" placeholder="Кількість, розміри, адреса доставки"></textarea>
+      <button type="submit">Надіслати у Viber</button>
+      <p class="form-note">Заявка відкриється у Viber на номер 097 907 9663. Можна й просто зателефонувати.</p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-inner">
+    <div class="logo">PLAT<span style="color:var(--rust)">FORMA</span></div>
+    <div>© 2026 PLATFORMA — виробництво бетонних виробів. Усі права захищено.</div>
+  </div>
+</footer>
+
+<script>
+  const burger = document.getElementById('burger');
+  const nav = document.getElementById('nav');
+  burger.addEventListener('click', () => nav.classList.toggle('open'));
+  nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+
+  const orderForm = document.getElementById('orderForm');
+  orderForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = document.getElementById('name').value.trim();
+    const tel = document.getElementById('tel').value.trim();
+    const product = document.getElementById('product').value;
+    const msg = document.getElementById('msg').value.trim();
+    const text = `Заявка з сайту PLATFORMA%0AІм'я: ${encodeURIComponent(name)}%0AТелефон: ${encodeURIComponent(tel)}%0AВиріб: ${encodeURIComponent(product)}%0AКоментар: ${encodeURIComponent(msg || '—')}`;
+    window.location.href = `viber://chat?number=%2B380979079663&text=${text}`;
+  });
+  document.querySelectorAll('.js-slider').forEach(function(swatch){
+  const variants = JSON.parse(swatch.dataset.variants);
+  const code = swatch.querySelector('.stamp').textContent.split(' / ')[0];
+  const dotsWrap = swatch.querySelector('.swatch-dots');
+  let i = 0;
+
+  variants.forEach(function(_, idx){
+    const dot = document.createElement('button');
+    dot.setAttribute('aria-label', 'Візерунок ' + (idx + 1));
+    if(idx === 0) dot.classList.add('active');
+    dot.addEventListener('click', function(){ go(idx); });
+    dotsWrap.appendChild(dot);
+  });
+
+  function go(idx){
+    i = (idx + variants.length) % variants.length;
+    swatch.style.background = variants[i].bg;
+    swatch.querySelector('.stamp').textContent = code + ' / ' + variants[i].label;
+    dotsWrap.querySelectorAll('button').forEach(function(d, di){
+      d.classList.toggle('active', di === i);
+    });
+  }
+
+  swatch.querySelector('.swatch-prev').addEventListener('click', function(){ go(i - 1); });
+  swatch.querySelector('.swatch-next').addEventListener('click', function(){ go(i + 1); });
+});
+</script>
+
+</body>
+</html>
